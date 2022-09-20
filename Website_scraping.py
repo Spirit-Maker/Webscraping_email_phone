@@ -8,7 +8,8 @@ import json
 import pandas as pd
 from bs4 import BeautifulSoup
 
-k = 0
+requests.packages.urllib3.disable_warnings() 
+
 
 # function to remove duplicates
 
@@ -56,7 +57,7 @@ for url in urls:
 
     #http requests to the urls
         
-    res = requests.get(url)
+    res = requests.get(url, verify=False)
     print('searched home url: ', res.url) 
 
     # parse the response
@@ -76,7 +77,6 @@ for url in urls:
     # create a data structure to store the contacts
 
     contacts_f = {'website':res.url,'Email':'','Phone':''}
-    k=k+1
 
     # extract contact of the link if available
     try:
@@ -88,7 +88,7 @@ for url in urls:
 
         # searching contact URL
         
-        res_contact = requests.get(contact_url)
+        res_contact = requests.get(contact_url, verify=False)
 
         contact_info = BeautifulSoup(res_contact.text, 'lxml').get_text()
 
