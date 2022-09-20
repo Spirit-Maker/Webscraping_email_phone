@@ -7,38 +7,8 @@ import csv
 import json
 import pandas as pd
 from bs4 import BeautifulSoup
-try: 
-	from googlesearch import search 
-except ImportError: 
-	print("No module named 'google' found")
-	
-#code to googlesearch
-search_list = []
-# open the web_urls file to clean the already present data   
-f = open("web_urls.txt", "r+")  
-  
-# absolute file positioning 
-f.seek(0)  
-  
-# to erase all data  
-f.truncate()
 
 k = 0
-m=True
-while(m):
-        s=input('Type y/n whether you want to enter the organization name: ')
-        if(s=='y'):
-                query = input('enter the organization: ')
-                search_list.append(query)
-                file = open("web_urls.txt", "a")
-                for o in search(query, tld="co.in", num=1, stop=1, pause=2): 
-                        url_site=o
-                        file.write(url_site)
-                        file.write('\n')
-        if(s=='n'):
-                m=False 
-                print('Thankyou...')
-                file.close()
 
 # function to remove duplicates
 
@@ -105,7 +75,7 @@ for url in urls:
     
     # create a data structure to store the contacts
 
-    contacts_f = {'Searches':search_list[k],'website':res.url,'Email':'','Phone':''}
+    contacts_f = {'website':res.url,'Email':'','Phone':''}
     k=k+1
 
     # extract contact of the link if available
