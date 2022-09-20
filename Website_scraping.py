@@ -23,7 +23,7 @@ def get_email(html):
     try:
         email = re.findall("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,3}",html)
         nodup_email = remove_dup_email(email)
-        return nodup_email
+        return [i.strip() for i in nodup_email]
     except:
         pass
 
@@ -34,7 +34,7 @@ def get_phone(html):
         for p in phone1:
              phone.append(p)
         nodup_phone = remove_dup_phone(phone)
-        return nodup_phone
+        return [i.strip() for i in nodup_phone]
     except:
         pass
 
@@ -56,10 +56,16 @@ urls = list(filter(None, urls.split('\n')))
 for url in urls:
 
     #http requests to the urls
-        
-    res = requests.get(url, verify=False)
-    print('searched home url: ', res.url) 
+    res=None
+    try: 
+        res = requests.get(url, verify=False)
+        print('searched home url: ', res.url) 
+    except:
+        continue
+    
 
+    if res.status_code != 200:
+        continue
     # parse the response
     
     info = BeautifulSoup(res.text,'lxml')
