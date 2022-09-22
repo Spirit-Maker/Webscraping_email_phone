@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from cgitb import reset
 import coloredlogs
 import logging
 from threading import Thread
@@ -9,12 +10,12 @@ import requests
 import re
 import csv
 import json
-import pandas as pd
 from bs4 import BeautifulSoup
+import requests_random_user_agent
 
 requests.packages.urllib3.disable_warnings()
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
 coloredlogs.install(logger=logger)
@@ -180,6 +181,19 @@ def main():
     
     print(json.dumps(results, indent=4))
 
+    # dumping the data into the csv file
+
+    with open('website_info.csv', 'a') as f:
+
+        #creater csv writer object
+
+        writer = csv.DictWriter(f, fieldnames=results[0].keys())
+
+        writer.writeheader()
+
+        #append rows to the csv
+
+        writer.writerows(results)
 
 if __name__ == "__main__":
     main()
